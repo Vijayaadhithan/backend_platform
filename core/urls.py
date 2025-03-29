@@ -5,6 +5,7 @@ from . import auth_views
 from . import views_shop
 from . import views_return
 from . import views_analytics
+from . import views_coupon
 
 router = DefaultRouter()
 router.register('users', views.UserViewSet)
@@ -20,6 +21,8 @@ router.register('reviews', views.ReviewViewSet)
 router.register('notifications', views.NotificationViewSet)
 router.register('shops', views_shop.ShopViewSet)
 router.register('return-requests', views_return.ReturnRequestViewSet)
+router.register('coupons', views_coupon.CouponViewSet)
+router.register('coupon-usages', views_coupon.CouponUsageViewSet, basename='coupon-usage')
 
 urlpatterns = [
     path('', include(router.urls)),

@@ -1,4 +1,5 @@
 from rest_framework import views, permissions, status
+from .security import get_permission_classes
 from rest_framework.response import Response
 from django.db.models import Count, Sum, Avg, F, ExpressionWrapper, fields
 from django.db.models.functions import TruncDay, TruncWeek, TruncMonth
@@ -9,9 +10,9 @@ from .models import Order, Booking, User, Product, ServiceProvider, Payment, Ret
 class AnalyticsView(views.APIView):
     """
     API view for providing analytics data for the dashboard.
-    Only accessible to staff users.
+    Only accessible to staff users when security is enabled.
     """
-    permission_classes = [permissions.IsAdminUser]
+    permission_classes = get_permission_classes(staff_only=True)
     
     def get(self, request, *args, **kwargs):
         """

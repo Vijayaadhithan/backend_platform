@@ -55,18 +55,29 @@ INSTALLED_APPS = [
     "corsheaders",
 ]
 
-MIDDLEWARE = [
+# Debug Flags
+DEBUG_API_ACCESS = os.environ.get('DEBUG_API_ACCESS', 'False').lower() == 'false'
+# Security toggle for testing - set to True to disable all security
+DEBUG_SECURITY = True  # Security disabled by default
+
+# Define base middleware
+MIDDLEWARE_BASE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
-    "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
-    "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "django.middleware.locale.LocaleMiddleware",  # Add Django's locale middleware
     "core.middleware.UserLanguageMiddleware",  # Add custom user language middleware
 ]
+
+# Add security middleware only if DEBUG_SECURITY is False
+if not DEBUG_SECURITY:
+    MIDDLEWARE_BASE.insert(4, "django.middleware.csrf.CsrfViewMiddleware")
+    MIDDLEWARE_BASE.append("django.middleware.clickjacking.XFrameOptionsMiddleware")
+
+MIDDLEWARE = MIDDLEWARE_BASE
 
 ROOT_URLCONF = "service_app.urls"
 
@@ -156,8 +167,10 @@ EMAIL_BACKEND = 'sendgrid_backend.SendgridBackend'
 SENDGRID_API_KEY = os.environ.get('SENDGRID_API_KEY')
 DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL', 'noreply@yourapp.com')
 
-# Debug API Access Flag
+# Debug Flags
 DEBUG_API_ACCESS = os.environ.get('DEBUG_API_ACCESS', 'False').lower() == 'false'
+# Security toggle for testing - set to True to disable all security
+DEBUG_SECURITY = True  # Security disabled by default
 
 # REST Framework settings
 REST_FRAMEWORK = {
@@ -165,7 +178,8 @@ REST_FRAMEWORK = {
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticated' if not DEBUG_API_ACCESS else 'rest_framework.permissions.AllowAny',
+        'rest_framework.permissions.AllowAny' if DEBUG_SECURITY else
+        ('rest_framework.permissions.IsAuthenticated' if not DEBUG_API_ACCESS else 'rest_framework.permissions.AllowAny'),
     ],
     'DEFAULT_RENDERER_CLASSES': [
         'rest_framework.renderers.JSONRenderer',

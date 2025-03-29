@@ -1,4 +1,5 @@
 from rest_framework import viewsets, permissions, status
+from .security import get_permission_classes
 from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
 from rest_framework.authtoken.views import ObtainAuthToken
@@ -15,7 +16,7 @@ from .models import Payment, Booking, Order
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = get_permission_classes()
 
 class CreateUserView(APIView):
     permission_classes = [permissions.AllowAny]
@@ -46,7 +47,7 @@ class CreateTokenView(ObtainAuthToken):
         })
 
 class PaymentView(APIView):
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = get_permission_classes()
 
     def post(self, request):
         from decimal import Decimal
@@ -133,24 +134,24 @@ class ServiceProviderFilter(filters.FilterSet):
 class ServiceProviderViewSet(viewsets.ModelViewSet):
     queryset = ServiceProvider.objects.all()
     serializer_class = ServiceProviderSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = get_permission_classes()
     filter_backends = [filters.DjangoFilterBackend]
     filterset_class = ServiceProviderFilter
 
 class ServiceTypeViewSet(viewsets.ModelViewSet):
     queryset = ServiceType.objects.all()
     serializer_class = ServiceTypeSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = get_permission_classes()
 
 class ProductViewSet(viewsets.ModelViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = get_permission_classes()
 
 class BookingViewSet(viewsets.ModelViewSet):
     queryset = Booking.objects.all()
     serializer_class = BookingSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = get_permission_classes()
     
     def create(self, request, *args, **kwargs):
         data = request.data.copy()
@@ -228,32 +229,32 @@ class BookingViewSet(viewsets.ModelViewSet):
 class OrderViewSet(viewsets.ModelViewSet):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = get_permission_classes()
 
 class LoyaltyProgramViewSet(viewsets.ModelViewSet):
     queryset = LoyaltyProgram.objects.all()
     serializer_class = LoyaltyProgramSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = get_permission_classes()
 
 class MembershipViewSet(viewsets.ModelViewSet):
     queryset = Membership.objects.all()
     serializer_class = MembershipSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = get_permission_classes()
 
 class UserMembershipViewSet(viewsets.ModelViewSet):
     queryset = UserMembership.objects.all()
     serializer_class = UserMembershipSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = get_permission_classes()
 
 class ReviewViewSet(viewsets.ModelViewSet):
     queryset = Review.objects.all()
     serializer_class = ReviewSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = get_permission_classes()
 
 class NotificationViewSet(viewsets.ModelViewSet):
     queryset = Notification.objects.all()
     serializer_class = NotificationSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = get_permission_classes()
 
     def post(self, request):
         from decimal import Decimal

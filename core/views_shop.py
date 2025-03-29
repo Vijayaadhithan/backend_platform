@@ -2,6 +2,7 @@ from rest_framework import viewsets, permissions
 from django.db.models import Q
 from .models import Shop
 from .serializers import ShopSerializer
+from .security import get_permission_classes
 
 class ShopViewSet(viewsets.ModelViewSet):
     """
@@ -10,7 +11,7 @@ class ShopViewSet(viewsets.ModelViewSet):
     """
     queryset = Shop.objects.all()
     serializer_class = ShopSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = get_permission_classes()
     
     def perform_create(self, serializer):
         """

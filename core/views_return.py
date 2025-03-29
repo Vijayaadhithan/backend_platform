@@ -6,6 +6,7 @@ from .models import ReturnRequest, Order, Payment
 from .serializers import ReturnRequestSerializer
 import razorpay
 from django.conf import settings
+from .security import get_permission_classes
 
 class ReturnRequestViewSet(viewsets.ModelViewSet):
     """
@@ -14,7 +15,7 @@ class ReturnRequestViewSet(viewsets.ModelViewSet):
     """
     queryset = ReturnRequest.objects.all()
     serializer_class = ReturnRequestSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = get_permission_classes()
     
     def get_queryset(self):
         """
