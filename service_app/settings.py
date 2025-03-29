@@ -42,6 +42,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     "modeltranslation",  # Add django-modeltranslation before admin
     "rest_framework",
+    "rest_framework.authtoken",  # Required for Token authentication
     "rest_framework_simplejwt",
     "django_filters",
     "auditlog",
